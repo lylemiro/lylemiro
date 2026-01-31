@@ -16,9 +16,25 @@ const App: React.FC = () => {
 
   // Stabilize viewport height for mobile browsers
   useEffect(() => {
+    let lastWidth = window.innerWidth;
     const updateHeight = () => {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+
+      // If width changed significantly (orientation change), reset height lock
+      if (Math.abs(vw - lastWidth) > 50) {
+        document.documentElement.style.setProperty('--app-height', `${vh}px`);
+        lastWidth = vw;
+        return;
+      }
+
+      // Otherwise, only expand the height, never shrink it
+      const currentHeight = parseFloat(document.documentElement.style.getPropertyValue('--app-height') || '0');
+      if (vh > currentHeight) {
+        document.documentElement.style.setProperty('--app-height', `${vh}px`);
+      }
     };
+
     updateHeight();
     window.addEventListener('resize', updateHeight);
     return () => window.removeEventListener('resize', updateHeight);

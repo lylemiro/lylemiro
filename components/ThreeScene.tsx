@@ -1185,18 +1185,21 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            // On mobile, ignore small height changes (like URL bar)
-            if (Math.abs(width - lastWidth) < 2 && Math.abs(height - lastHeight) < 80) {
-                return;
+            // Significant width change (orientation) -> Re-sync everything
+            const widthChanged = Math.abs(width - lastWidth) > 50;
+
+            // Only update height if it expands (prevent squashing when URL bar shows)
+            const heightExpands = height > lastHeight;
+
+            if (widthChanged || heightExpands) {
+                lastWidth = width;
+                lastHeight = height;
+
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             }
-
-            lastWidth = width;
-            lastHeight = height;
-
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         };
         window.addEventListener('resize', handleResize);
 
@@ -1211,7 +1214,13 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
     if (minimalMode) return null;
 
-    return <div ref={mountRef} className="fixed inset-0 z-0 pointer-events-none" />;
+    return (
+        <div
+            ref={mountRef}
+            className="fixed top-0 left-0 w-full z-0 pointer-events-none overflow-hidden"
+            style={{ height: 'var(--app-height, 100vh)' }}
+        />
+    );
 };
 
 export default ThreeScene;
