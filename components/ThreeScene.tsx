@@ -132,8 +132,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         });
 
         const galaxy = new THREE.Points(galaxyGeo, galaxyMat);
-        galaxy.position.set(isMobile ? -280 : -800, 700, -2500); // Further back
-        galaxy.scale.set(3.5, 3.5, 3.5); // Scaled up for distance
+        galaxy.position.set(isMobile ? -140 : -400, 350, -900);
+        galaxy.scale.set(1.75, 1.75, 1.75); // Increased 75% for "closer" look
         galaxy.rotation.x = Math.PI / 1.7;
         galaxy.rotation.y = Math.PI / 8;
         galaxy.rotation.z = -Math.PI / 12;
@@ -164,7 +164,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
 
         // --- SUN ---
-        const sunGeo = new THREE.PlaneGeometry(1200, 1200);
+        const sunGeo = new THREE.PlaneGeometry(300, 300);
         const sunMat = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
@@ -204,12 +204,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         });
 
         const sun = new THREE.Mesh(sunGeo, sunMat);
-        sun.position.set(0, isMobile ? 80 : 160, -2000); // Deep Space
+        sun.position.set(0, isMobile ? 20 : 40, -500);
         sun.renderOrder = 2; // Above comet/galaxy
         scene.add(sun);
 
         // Balanced Sun Glow size and color
-        const glowGeo = new THREE.PlaneGeometry(2800, 2800);
+        const glowGeo = new THREE.PlaneGeometry(700, 700);
         const glowMat = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
@@ -245,14 +245,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             fog: false
         });
         const sunGlow = new THREE.Mesh(glowGeo, glowMat);
-        sunGlow.position.set(0, isMobile ? 80 : 160, -2005); // Slightly behind sun
+        sunGlow.position.set(0, 40, -505); // Slightly behind sun
         sunGlow.renderOrder = 2; // Sync with sun
         scene.add(sunGlow);
 
         const sunReflect = sun.clone();
         sunReflect.scale.y = -1;
-        sunReflect.position.y = isMobile ? -80 : -160;
-        sunReflect.position.z = -2000;
+        sunReflect.position.y = isMobile ? -20 : -40;
+        sunReflect.position.z = -500;
         const sunReflectMat = sunMat.clone();
         sunReflectMat.uniforms.colorTop = { value: new THREE.Color('#550022') };
         sunReflectMat.uniforms.colorBottom = { value: new THREE.Color('#220011') };
@@ -273,14 +273,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         cruxGroup.add(vBar);
         cruxGroup.add(hBar);
         // Lowered Y further to sit on the valley floor
-        cruxGroup.position.set(0, 50, -1980);
+        cruxGroup.position.set(0, 15, -480);
         cruxGroup.renderOrder = 3;
         scene.add(cruxGroup);
 
         // --- BLACK HOLE ---
         const blackHoleGroup = new THREE.Group();
-        // Repositioned: Deep back
-        blackHoleGroup.position.set(isMobile ? 440 : 800, 1000, -2200);
+        // Repositioned: Center top, leaning right (Responsive X)
+        blackHoleGroup.position.set(isMobile ? 110 : 200, 250, -600);
         scene.add(blackHoleGroup);
 
         // 1. Event Horizon (Scaled down to 10 - Planet sized)
@@ -427,7 +427,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const bhReflectGroup = new THREE.Group();
         bhReflectGroup.add(diskReflect);
         bhReflectGroup.add(horizonReflect);
-        bhReflectGroup.position.set(isMobile ? 440 : 800, -1000, -2200); // Matched responsive reposition
+        bhReflectGroup.position.set(isMobile ? 110 : 200, -250, -600); // Matched responsive reposition
         bhReflectGroup.scale.y = -1; // Mirror geometry
         scene.add(bhReflectGroup);
 
@@ -581,19 +581,17 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             fog: false
         });
         const planet = new THREE.Mesh(planetGeo, planetShader);
-        planet.scale.set(4, 4, 4);
         planetGroup.add(planet);
 
         const ringGeo = new THREE.TorusGeometry(16, 0.3, 16, 100);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.scale.set(4, 4, 4);
         ring.rotation.x = Math.PI / 2;
         ring.rotation.y = -Math.PI / 6;
         planetGroup.add(ring);
 
         // Responsive Position for Planet
-        planetGroup.position.set(isMobile ? 360 : 720, 480, -1800);
+        planetGroup.position.set(isMobile ? 90 : 180, 120, -400);
         scene.add(planetGroup);
 
         // --- FILM GRAIN ---
