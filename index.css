@@ -1,0 +1,20 @@
+/* Global Styles */
+@keyframes scroll-line {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-scroll-line {
+  animation: scroll-line 2.5s infinite cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Ensure font is loaded */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'JetBrains Mono', monospace;
+  background-color: #050505;
+  color: #F0F0F0;
+  overflow-x: hidden;
+}
