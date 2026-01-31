@@ -587,7 +587,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const planet = new THREE.Mesh(planetGeo, planetShader);
         planetGroup.add(planet);
 
-        const ringGeo = new THREE.TorusGeometry(16, 1.2, 16, 100);
+        const ringGeo = new THREE.TorusGeometry(64, 0.3, 16, 100);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.x = Math.PI / 2;
