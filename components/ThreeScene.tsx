@@ -557,8 +557,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
                 {
-                    color1: { value: new THREE.Color('#8a2be2') },
-                    color2: { value: new THREE.Color('#4b0082') }
+                    color1: { value: new THREE.Color('#4169e1') }, // Royal Blue
+                    color2: { value: new THREE.Color('#1e3a8a') }  // Deep Blue
                 }
             ]),
             vertexShader: `
@@ -602,7 +602,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const grainMat = new THREE.ShaderMaterial({
             uniforms: {
                 time: { value: 0 },
-                amount: { value: 0.08 }
+                amount: { value: 0.15 }
             },
             vertexShader: `
                 varying vec2 vUv;
@@ -944,8 +944,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             const orbitRadius = isMobile ? 240 : 280;
             const orbitX = Math.cos(orbitTime) * orbitRadius;
 
-            // Reduced height (was 180) to 120 to bring it closer to horizon/sun center
-            const orbitY = 120 + Math.sin(orbitTime * 0.5) * 40;
+            // Lowered height to 80 (from 120) for closer-to-horizon orbit
+            const orbitY = 80 + Math.sin(orbitTime * 0.5) * 40;
 
             const orbitZ = -500 + Math.sin(orbitTime) * 100; // Orbiting the sun at z=-500
             planetGroup.position.set(orbitX, orbitY, orbitZ);
