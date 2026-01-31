@@ -832,8 +832,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
         const tailMat = new THREE.ShaderMaterial({
             uniforms: {
-                color1: { value: new THREE.Color(0xff00ff) }, // Magenta
-                color2: { value: new THREE.Color(0x9900ff) }, // Deep Violet
+                color1: { value: new THREE.Color(0x00ffff) }, // Cyan
+                color2: { value: new THREE.Color(0x0088ff) }, // Light Blue
                 viewVector: { value: new THREE.Vector3(0, 0, 1) }
             },
             vertexShader: `
@@ -899,8 +899,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
         const tailMat2 = tailMat.clone();
         tailMat2.uniforms = {
-            color1: { value: new THREE.Color(0xff00ff) },
-            color2: { value: new THREE.Color(0x5500aa) }
+            color1: { value: new THREE.Color(0x00ffff) },
+            color2: { value: new THREE.Color(0x0055aa) }
         };
         // Use darker colors but same shader
         tailMat2.vertexShader = tailMat.vertexShader;
@@ -943,8 +943,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             const orbitRadius = isMobile ? 140 : 280;
             const orbitX = Math.cos(orbitTime) * orbitRadius;
 
-            // Raised height significantly (was 40) to be well above horizon/mid-sun
-            const orbitY = 180 + Math.sin(orbitTime * 0.5) * 40;
+            // Reduced height (was 180) to 120 to bring it closer to horizon/sun center
+            const orbitY = 120 + Math.sin(orbitTime * 0.5) * 40;
 
             const orbitZ = -500 + Math.sin(orbitTime) * 100; // Orbiting the sun at z=-500
             planetGroup.position.set(orbitX, orbitY, orbitZ);
