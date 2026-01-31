@@ -4,9 +4,14 @@ import { CursorState } from '../types';
 const CustomCursor: React.FC = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [cursorState, setCursorState] = useState<CursorState>(CursorState.DEFAULT);
+  const [isMobile, setIsMobile] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Check if device supports hover/fine pointer
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    setIsMobile(!mediaQuery.matches);
+
     const onMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -52,6 +57,8 @@ const CustomCursor: React.FC = () => {
     }
   };
 
+  if (isMobile) return null;
+
   return (
     <div
       ref={cursorRef}
@@ -64,16 +71,16 @@ const CustomCursor: React.FC = () => {
           Intermediate Triangle Shape 
           polygon(0 0, 100% 30%, 30% 100%) - Balanced width
       */}
-      <div 
+      <div
         className={`w-full h-full transition-all duration-200 origin-top-left ${getCursorStyles()}`}
         style={{ clipPath: 'polygon(0 0, 100% 30%, 30% 100%)' }}
       />
-      
+
       {/* Label - Positioned relative to new size */}
       {cursorState === CursorState.HOVER && (
-          <div className="absolute top-7 left-7 bg-black text-[8px] text-white px-2 py-1 font-mono border border-white/20 whitespace-nowrap z-[10000]">
-            SELECT
-          </div>
+        <div className="absolute top-7 left-7 bg-black text-[8px] text-white px-2 py-1 font-mono border border-white/20 whitespace-nowrap z-[10000]">
+          SELECT
+        </div>
       )}
     </div>
   );
