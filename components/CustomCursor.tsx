@@ -55,7 +55,7 @@ const CustomCursor: React.FC = () => {
   return (
     <div
       ref={cursorRef}
-      className={`fixed top-0 left-0 w-7 h-7 pointer-events-none z-[9999] transition-transform duration-100 ease-out flex items-start justify-start origin-top-left`}
+      className={`custom-cursor fixed top-0 left-0 w-7 h-7 pointer-events-none z-[9999] transition-transform duration-100 ease-out flex items-start justify-start origin-top-left`}
       style={{
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
       }}

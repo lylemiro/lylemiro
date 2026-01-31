@@ -32,7 +32,27 @@
   <style>
     :root {
       --accent-color: #FF5F1F;
-      cursor: none;
+    }
+
+    /* Hide cursor only on desktop/devices with a pointer */
+    @media (pointer: fine) {
+
+      :root,
+      a,
+      button,
+      [role="button"],
+      input,
+      select,
+      textarea {
+        cursor: none !important;
+      }
+    }
+
+    /* Hide the custom cursor component on touch devices */
+    @media (pointer: coarse) {
+      .custom-cursor {
+        display: none !important;
+      }
     }
 
     body {
