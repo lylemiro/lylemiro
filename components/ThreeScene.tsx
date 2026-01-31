@@ -938,7 +938,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             if (r2.position.z >= planeD) r2.position.z = -planeD;
 
             // --- PLANET REVOLUTION ---
-            const orbitTime = Date.now() * 0.0005;
+            // Significantly slowed down orbit (was 0.0005) for majestic look
+            const orbitTime = Date.now() * 0.0001;
             // Increased radius significantly (was 80/150) to orbit wider around the sun
             const orbitRadius = isMobile ? 140 : 280;
             const orbitX = Math.cos(orbitTime) * orbitRadius;
