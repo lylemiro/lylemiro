@@ -14,7 +14,17 @@ const App: React.FC = () => {
   const [colorIndex, setColorIndex] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
-  // Initialize CSS variables
+  // Stabilize viewport height for mobile browsers
+  useEffect(() => {
+    const updateHeight = () => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
+  // Initialize CSS variables for accent color
   useEffect(() => {
     const color = ACCENT_COLORS[colorIndex];
     document.documentElement.style.setProperty('--accent-color', color.hex);

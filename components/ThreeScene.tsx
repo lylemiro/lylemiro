@@ -204,7 +204,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         });
 
         const sun = new THREE.Mesh(sunGeo, sunMat);
-        sun.position.set(0, 40, -500);
+        sun.position.set(0, isMobile ? 20 : 40, -500);
         sun.renderOrder = 2; // Above comet/galaxy
         scene.add(sun);
 
@@ -251,7 +251,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
         const sunReflect = sun.clone();
         sunReflect.scale.y = -1;
-        sunReflect.position.y = -40;
+        sunReflect.position.y = isMobile ? -20 : -40;
         sunReflect.position.z = -500;
         const sunReflectMat = sunMat.clone();
         sunReflectMat.uniforms.colorTop = { value: new THREE.Color('#550022') };
@@ -1178,10 +1178,25 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         };
         animate();
 
+        let lastWidth = window.innerWidth;
+        let lastHeight = window.innerHeight;
+
         const handleResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            // On mobile, ignore small height changes (like URL bar)
+            if (Math.abs(width - lastWidth) < 2 && Math.abs(height - lastHeight) < 80) {
+                return;
+            }
+
+            lastWidth = width;
+            lastHeight = height;
+
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         };
         window.addEventListener('resize', handleResize);
 
