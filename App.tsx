@@ -53,7 +53,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`relative min-h-screen w-full selection:bg-neo-yellow selection:text-black cursor-none ${minimalMode ? 'minimal-mode' : ''}`}>
+    <div className={`relative h-full w-full selection:bg-neo-yellow selection:text-black cursor-none ${minimalMode ? 'minimal-mode' : ''}`}>
 
       {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
 
