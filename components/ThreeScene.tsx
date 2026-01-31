@@ -1017,24 +1017,33 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
                 if (cometTimer > 150 && Math.random() > 0.98) {
                     cometActive = true;
                     cometTimer = 0;
-                    const startX = (Math.random() > 0.5 ? -1 : 1) * 800;
+                    // Randomize START side (Left or Right)
+                    const startX = (Math.random() > 0.5 ? -1 : 1) * (800 + Math.random() * 200);
 
-                    // ADJUSTED SPAWN HEIGHT: Near top of the Sun (Sun top is ~190)
-                    const startY = 180 + Math.random() * 40;
-                    // BEHIND SUN (-500) and BLACK HOLE (-600).
+                    // ADJUSTED SPAWN HEIGHT: Near top of the Sun
+                    const startY = 180 + Math.random() * 60;
                     const startZ = -1000 - Math.random() * 200;
                     cometGroup.position.set(startX, startY, startZ);
 
-                    const targetX = -startX * 1.8;
-                    // Force Diagonal: Add significant Y variation (+/- 300 to 500 offset)
-                    // If starting right (positive X), go Target Left. 
-                    // Let's make it random slope (up or down) but STEEP.
-                    const slopeY = (Math.random() > 0.5 ? 1 : -1) * (300 + Math.random() * 200);
+                    // Randomize TARGET side (Opposite of start + variation)
+                    // Multiplier 1.5 to 2.5 ensures it crosses the screen fully
+                    const targetX = -startX * (1.5 + Math.random());
+
+                    // RANDOM SLOPES: Ensure it's never flat.
+                    // Go UP or GO DOWN significantly.
+                    const minSlope = 300;
+                    const maxSlope = 600;
+                    const slopeDirection = Math.random() > 0.5 ? 1 : -1;
+                    const slopeY = slopeDirection * (minSlope + Math.random() * (maxSlope - minSlope));
+
                     const targetY = startY + slopeY;
-                    const targetZ = startZ;
+
+                    // Add Z drift for 3D depth
+                    const targetZ = startZ + (Math.random() - 0.5) * 400;
+
                     const dir = new THREE.Vector3(targetX - startX, targetY - startY, targetZ - startZ).normalize();
 
-                    cometVelocity = dir.multiplyScalar(1.2); // Slower but steadier
+                    cometVelocity = dir.multiplyScalar(1.2); // Maintain steady speed
                     cometGroup.renderOrder = 0; // Render behind everything else
                     cometGroup.lookAt(cometGroup.position.clone().add(dir));
                     // Spin the head/glow slightly for effect
