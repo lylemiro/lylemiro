@@ -552,7 +552,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
         // --- PLANET ---
         const planetGroup = new THREE.Group();
-        const planetGeo = new THREE.SphereGeometry(10, 32, 32);
+        const planetGeo = new THREE.SphereGeometry(15, 32, 32);
         const planetShader = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
@@ -590,8 +590,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         // Create multiple concentric rings for Saturn-like appearance
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
         for (let i = 0; i < 10; i++) {
-            const ringRadius = 16 + (i * 2); // Start at 16, increment by 2
-            const ringGeo = new THREE.TorusGeometry(ringRadius, 0.3, 16, 100);
+            const ringRadius = 20 + (i * 2); // 50% reduction (Start at 20, increment by 2)
+            const ringGeo = new THREE.TorusGeometry(ringRadius, 0.45, 16, 100); // 50% reduction 0.9 -> 0.45
             const ring = new THREE.Mesh(ringGeo, ringMat);
             ring.rotation.x = Math.PI / 2;
             ring.rotation.y = -Math.PI / 6;
@@ -604,7 +604,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
         // --- RED PLANET (Counter-Orbit) ---
         const redPlanetGroup = new THREE.Group();
-        const redPlanetGeo = new THREE.SphereGeometry(2.5, 32, 32); // 75% smaller (10 * 0.25 = 2.5)
+        const redPlanetGeo = new THREE.SphereGeometry(7.5, 32, 32); // Upscaled by 3x (2.5 * 3 = 7.5)
         const redPlanetShader = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
@@ -985,10 +985,10 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             if (r2.position.z >= planeD) r2.position.z = -planeD;
 
             // --- PLANET REVOLUTION ---
-            // Significantly slowed down orbit (was 0.0005) for majestic look
-            const orbitTime = Date.now() * 0.0001;
-            // Increased radius significantly (was 80/150) to orbit wider around the sun
-            const orbitRadius = isMobile ? 240 : 280;
+            // Significantly slowed down orbit (was 0.0001) for majestic look
+            const orbitTime = Date.now() * 0.00005;
+            // Widened orbit significantly to create more space (was 240/280)
+            const orbitRadius = isMobile ? 350 : 450;
             const orbitX = Math.cos(orbitTime) * orbitRadius;
 
             // Lowered height to 80 (from 120) for closer-to-horizon orbit
