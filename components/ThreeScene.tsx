@@ -192,9 +192,13 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
           float dist = distance(vUv, vec2(0.5, 0.5));
           if (dist > 0.5) discard;
 
+          // Classic Vaporwave Sun Stripes (Horizontal Bars)
+          float stripes = step(0.15, fract(vUv.y * 12.0));
+          // Fade stripes towards the top
+          float stripeMask = mix(1.0, stripes, smoothstep(0.8, 0.2, vUv.y));
+          
           vec3 gradient = mix(colorBottom, colorTop, vUv.y);
-          // Balanced brightness boost
-          gl_FragColor = vec4(gradient * 1.5, 1.0);
+          gl_FragColor = vec4(gradient * 1.5, stripeMask);
           #include <fog_fragment>
         }
       `,

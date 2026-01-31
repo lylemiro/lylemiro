@@ -64,22 +64,31 @@
       touch-action: pan-y;
     }
 
-    /* CRT Scanline Effect */
-    .scanlines {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--app-height, 100vh);
-      background: linear-gradient(to bottom,
-          transparent,
-          transparent 50%,
-          rgba(0, 0, 0, 0.2) 50%,
-          rgba(0, 0, 0, 0.2));
-      background-size: 100% 2px;
-      pointer-events: none;
-      z-index: 9998;
-      opacity: 0.2;
+    /* CRT Scanline Effect - Desktop Only to prevent mobile moire artifacts */
+    @media (pointer: fine) {
+      .scanlines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--app-height, 100vh);
+        background: linear-gradient(to bottom,
+            transparent,
+            transparent 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2));
+        background-size: 100% 2px;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0.2;
+      }
+    }
+
+    /* Keep scanlines hidden by default on mobile */
+    @media (pointer: coarse) {
+      .scanlines {
+        display: none !important;
+      }
     }
 
     .vignette {
