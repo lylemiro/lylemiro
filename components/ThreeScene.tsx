@@ -164,7 +164,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
 
         // --- SUN ---
-        const sunGeo = new THREE.PlaneGeometry(300, 300);
+        const sunGeo = new THREE.PlaneGeometry(600, 600);
         const sunMat = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
@@ -204,12 +204,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         });
 
         const sun = new THREE.Mesh(sunGeo, sunMat);
-        sun.position.set(0, isMobile ? 20 : 40, -500);
+        sun.position.set(0, isMobile ? 40 : 80, -1000); // Scaled up and moved back
         sun.renderOrder = 2; // Above comet/galaxy
         scene.add(sun);
 
         // Balanced Sun Glow size and color
-        const glowGeo = new THREE.PlaneGeometry(700, 700);
+        const glowGeo = new THREE.PlaneGeometry(1400, 1400);
         const glowMat = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge([
                 THREE.UniformsLib.fog,
@@ -245,14 +245,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             fog: false
         });
         const sunGlow = new THREE.Mesh(glowGeo, glowMat);
-        sunGlow.position.set(0, 40, -505); // Slightly behind sun
+        sunGlow.position.set(0, isMobile ? 40 : 80, -1005); // Slightly behind sun
         sunGlow.renderOrder = 2; // Sync with sun
         scene.add(sunGlow);
 
         const sunReflect = sun.clone();
         sunReflect.scale.y = -1;
-        sunReflect.position.y = isMobile ? -20 : -40;
-        sunReflect.position.z = -500;
+        sunReflect.position.y = isMobile ? -40 : -80;
+        sunReflect.position.z = -1000;
         const sunReflectMat = sunMat.clone();
         sunReflectMat.uniforms.colorTop = { value: new THREE.Color('#550022') };
         sunReflectMat.uniforms.colorBottom = { value: new THREE.Color('#220011') };
@@ -273,14 +273,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         cruxGroup.add(vBar);
         cruxGroup.add(hBar);
         // Lowered Y further to sit on the valley floor
-        cruxGroup.position.set(0, 15, -480);
+        cruxGroup.position.set(0, 25, -980);
         cruxGroup.renderOrder = 3;
         scene.add(cruxGroup);
 
         // --- BLACK HOLE ---
         const blackHoleGroup = new THREE.Group();
         // Repositioned: Center top, leaning right (Responsive X)
-        blackHoleGroup.position.set(isMobile ? 110 : 200, 250, -600);
+        blackHoleGroup.position.set(isMobile ? 220 : 400, 500, -1100);
         scene.add(blackHoleGroup);
 
         // 1. Event Horizon (Scaled down to 10 - Planet sized)
@@ -427,7 +427,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const bhReflectGroup = new THREE.Group();
         bhReflectGroup.add(diskReflect);
         bhReflectGroup.add(horizonReflect);
-        bhReflectGroup.position.set(isMobile ? 110 : 200, -250, -600); // Matched responsive reposition
+        bhReflectGroup.position.set(isMobile ? 220 : 400, -500, -1100); // Matched responsive reposition
         bhReflectGroup.scale.y = -1; // Mirror geometry
         scene.add(bhReflectGroup);
 
@@ -581,17 +581,19 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             fog: false
         });
         const planet = new THREE.Mesh(planetGeo, planetShader);
+        planet.scale.set(2, 2, 2);
         planetGroup.add(planet);
 
         const ringGeo = new THREE.TorusGeometry(16, 0.3, 16, 100);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.scale.set(2, 2, 2);
         ring.rotation.x = Math.PI / 2;
         ring.rotation.y = -Math.PI / 6;
         planetGroup.add(ring);
 
         // Responsive Position for Planet
-        planetGroup.position.set(isMobile ? 90 : 180, 120, -400);
+        planetGroup.position.set(isMobile ? 180 : 360, 240, -800);
         scene.add(planetGroup);
 
         // --- FILM GRAIN ---
