@@ -587,12 +587,16 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const planet = new THREE.Mesh(planetGeo, planetShader);
         planetGroup.add(planet);
 
-        const ringGeo = new THREE.TorusGeometry(64, 0.3, 16, 100);
+        // Create multiple concentric rings for Saturn-like appearance
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.rotation.x = Math.PI / 2;
-        ring.rotation.y = -Math.PI / 6;
-        planetGroup.add(ring);
+        for (let i = 0; i < 10; i++) {
+            const ringRadius = 16 + (i * 2); // Start at 16, increment by 2
+            const ringGeo = new THREE.TorusGeometry(ringRadius, 0.3, 16, 100);
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = Math.PI / 2;
+            ring.rotation.y = -Math.PI / 6;
+            planetGroup.add(ring);
+        }
 
         // Responsive Position for Planet
         planetGroup.position.set(isMobile ? 90 : 180, 120, -400);
@@ -635,12 +639,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const redPlanet = new THREE.Mesh(redPlanetGeo, redPlanetShader);
         redPlanetGroup.add(redPlanet);
 
-        const redRingGeo = new THREE.TorusGeometry(16, 0.075, 16, 100); // 75% smaller ring
-        const redRingMat = new THREE.MeshBasicMaterial({ color: 0xff6666, transparent: true, opacity: 0.8 });
-        const redRing = new THREE.Mesh(redRingGeo, redRingMat);
-        redRing.rotation.x = Math.PI / 2;
-        redRing.rotation.y = Math.PI / 6;
-        redPlanetGroup.add(redRing);
+        // No ring for red planet
+
 
         redPlanetGroup.position.set(isMobile ? 90 : 180, 120, -400);
         scene.add(redPlanetGroup);
@@ -998,7 +998,6 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             planetGroup.position.set(orbitX, orbitY, orbitZ);
 
             planet.rotation.y -= 0.002;
-            ring.rotation.z += 0.005;
             planetGroup.rotation.x = Math.sin(orbitTime * 0.3) * 0.1; // Dynamic tilt
 
             // --- RED PLANET COUNTER-REVOLUTION ---
@@ -1010,7 +1009,6 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             redPlanetGroup.position.set(redOrbitX, redOrbitY, redOrbitZ);
 
             redPlanet.rotation.y += 0.002;
-            redRing.rotation.z -= 0.005;
             redPlanetGroup.rotation.x = Math.sin(-orbitTime * 0.3) * 0.1;
 
             galaxy.rotation.z += 0.0005;
