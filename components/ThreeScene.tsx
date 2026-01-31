@@ -587,7 +587,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         const planet = new THREE.Mesh(planetGeo, planetShader);
         planetGroup.add(planet);
 
-        const ringGeo = new THREE.TorusGeometry(16, 0.3, 16, 100);
+        const ringGeo = new THREE.TorusGeometry(16, 1.2, 16, 100);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.x = Math.PI / 2;
@@ -941,7 +941,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             // Significantly slowed down orbit (was 0.0005) for majestic look
             const orbitTime = Date.now() * 0.0001;
             // Increased radius significantly (was 80/150) to orbit wider around the sun
-            const orbitRadius = isMobile ? 140 : 280;
+            const orbitRadius = isMobile ? 240 : 280;
             const orbitX = Math.cos(orbitTime) * orbitRadius;
 
             // Reduced height (was 180) to 120 to bring it closer to horizon/sun center
