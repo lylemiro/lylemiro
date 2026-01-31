@@ -598,6 +598,53 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
         planetGroup.position.set(isMobile ? 90 : 180, 120, -400);
         scene.add(planetGroup);
 
+        // --- RED PLANET (Counter-Orbit) ---
+        const redPlanetGroup = new THREE.Group();
+        const redPlanetGeo = new THREE.SphereGeometry(2.5, 32, 32); // 75% smaller (10 * 0.25 = 2.5)
+        const redPlanetShader = new THREE.ShaderMaterial({
+            uniforms: THREE.UniformsUtils.merge([
+                THREE.UniformsLib.fog,
+                {
+                    color1: { value: new THREE.Color('#ff4444') }, // Bright Red
+                    color2: { value: new THREE.Color('#8b0000') }  // Dark Red
+                }
+            ]),
+            vertexShader: `
+            varying vec2 vUv;
+            #include <fog_pars_vertex>
+            void main() {
+                vUv = uv;
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                gl_Position = projectionMatrix * mvPosition;
+                #include <fog_vertex>
+            }
+        `,
+            fragmentShader: `
+            uniform vec3 color1;
+            uniform vec3 color2;
+            varying vec2 vUv;
+            #include <fog_pars_fragment>
+            void main() {
+                gl_FragColor = vec4(mix(color2, color1, vUv.y), 0.9);
+                #include <fog_fragment>
+            }
+        `,
+            transparent: true,
+            fog: false
+        });
+        const redPlanet = new THREE.Mesh(redPlanetGeo, redPlanetShader);
+        redPlanetGroup.add(redPlanet);
+
+        const redRingGeo = new THREE.TorusGeometry(16, 0.075, 16, 100); // 75% smaller ring
+        const redRingMat = new THREE.MeshBasicMaterial({ color: 0xff6666, transparent: true, opacity: 0.8 });
+        const redRing = new THREE.Mesh(redRingGeo, redRingMat);
+        redRing.rotation.x = Math.PI / 2;
+        redRing.rotation.y = Math.PI / 6;
+        redPlanetGroup.add(redRing);
+
+        redPlanetGroup.position.set(isMobile ? 90 : 180, 120, -400);
+        scene.add(redPlanetGroup);
+
         // --- FILM GRAIN ---
         const grainMat = new THREE.ShaderMaterial({
             uniforms: {
@@ -953,6 +1000,18 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             planet.rotation.y -= 0.002;
             ring.rotation.z += 0.005;
             planetGroup.rotation.x = Math.sin(orbitTime * 0.3) * 0.1; // Dynamic tilt
+
+            // --- RED PLANET COUNTER-REVOLUTION ---
+            // Opposite direction (negative time), smaller radius
+            const redOrbitRadius = isMobile ? 160 : 200;
+            const redOrbitX = Math.cos(-orbitTime) * redOrbitRadius; // Negative for opposite direction
+            const redOrbitY = 80 + Math.sin(-orbitTime * 0.5) * 40;
+            const redOrbitZ = -500 + Math.sin(-orbitTime) * 100;
+            redPlanetGroup.position.set(redOrbitX, redOrbitY, redOrbitZ);
+
+            redPlanet.rotation.y += 0.002;
+            redRing.rotation.z -= 0.005;
+            redPlanetGroup.rotation.x = Math.sin(-orbitTime * 0.3) * 0.1;
 
             galaxy.rotation.z += 0.0005;
 
