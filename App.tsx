@@ -4,7 +4,7 @@ import ProjectCard from './components/ProjectCard';
 import CustomCursor from './components/CustomCursor';
 import UIOverlay from './components/UIOverlay';
 import LoadingScreen from './components/LoadingScreen';
-import BackgroundMusic from './components/BackgroundMusic';
+import AudioPlayer from './components/AudioPlayer';
 import { PROJECTS, ACCENT_COLORS } from './constants';
 import { ColorScheme } from './types';
 
@@ -52,8 +52,8 @@ const App: React.FC = () => {
       {/* Custom Cursor */}
       {!minimalMode && !loading && <CustomCursor />}
 
-      {/* Background Music (YouTube) */}
-      <BackgroundMusic isPlaying={systemInitiated} />
+      {/* Audio Player (Internal MP3) */}
+      <AudioPlayer autoStart={systemInitiated} />
 
       {/* Background 3D Scene */}
       <ThreeScene minimalMode={minimalMode} />

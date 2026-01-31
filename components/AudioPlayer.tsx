@@ -1,13 +1,25 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-const AudioPlayer: React.FC = () => {
+interface AudioPlayerProps {
+    autoStart?: boolean;
+}
+
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ autoStart }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
-        // Attempt autoplay on mount
-        if (audioRef.current) {
+        if (autoStart && audioRef.current) {
+            audioRef.current.play()
+                .then(() => setIsPlaying(true))
+                .catch(err => console.log('Autoplay blocked:', err));
+        }
+    }, [autoStart]);
+
+    useEffect(() => {
+        // Attempt autoplay on mount (fallback)
+        if (audioRef.current && !isPlaying) {
             audioRef.current.play()
                 .then(() => setIsPlaying(true))
                 .catch(err => {
