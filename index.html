@@ -64,33 +64,6 @@
       touch-action: pan-y;
     }
 
-    /* CRT Scanline Effect */
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: var(--app-height, 100dvh);
-      background: linear-gradient(to bottom,
-          transparent,
-          transparent 50%,
-          rgba(0, 0, 0, 0.2) 50%,
-          rgba(0, 0, 0, 0.2));
-      background-size: 100% 2px;
-      pointer-events: none;
-      z-index: 9998;
-      opacity: 0.2;
-    }
-
-    .vignette {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: var(--app-height, 100dvh);
-      background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.4) 100%);
-      pointer-events: none;
-      z-index: 9998;
-    }
-
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 12px;
@@ -223,8 +196,6 @@
 
 <body>
   <div id="root"></div>
-  <div class="scanlines"></div>
-  <div class="vignette"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
 
