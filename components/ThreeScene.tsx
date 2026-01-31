@@ -939,9 +939,13 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
             // --- PLANET REVOLUTION ---
             const orbitTime = Date.now() * 0.0005;
-            const orbitRadius = isMobile ? 80 : 150;
+            // Increased radius significantly (was 80/150) to orbit wider around the sun
+            const orbitRadius = isMobile ? 140 : 280;
             const orbitX = Math.cos(orbitTime) * orbitRadius;
-            const orbitY = 40 + Math.sin(orbitTime * 0.5) * 30; // Slight vertical oscillation
+
+            // Raised height significantly (was 40) to be well above horizon/mid-sun
+            const orbitY = 180 + Math.sin(orbitTime * 0.5) * 40;
+
             const orbitZ = -500 + Math.sin(orbitTime) * 100; // Orbiting the sun at z=-500
             planetGroup.position.set(orbitX, orbitY, orbitZ);
 
