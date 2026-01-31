@@ -4,7 +4,7 @@ import ProjectCard from './components/ProjectCard';
 import CustomCursor from './components/CustomCursor';
 import UIOverlay from './components/UIOverlay';
 import LoadingScreen from './components/LoadingScreen';
-import AudioPlayer from './components/AudioPlayer';
+import BackgroundMusic from './components/BackgroundMusic';
 import { PROJECTS, ACCENT_COLORS } from './constants';
 import { ColorScheme } from './types';
 
@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const [minimalMode, setMinimalMode] = useState(false);
   const [colorIndex, setColorIndex] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [systemInitiated, setSystemInitiated] = useState(false);
 
   // Initialize CSS variables
   useEffect(() => {
@@ -40,6 +41,7 @@ const App: React.FC = () => {
 
   const handleLoadingComplete = () => {
     setLoading(false);
+    setSystemInitiated(true);
   };
 
   return (
@@ -50,8 +52,8 @@ const App: React.FC = () => {
       {/* Custom Cursor */}
       {!minimalMode && !loading && <CustomCursor />}
 
-      {/* Audio Player */}
-      <AudioPlayer />
+      {/* Background Music (YouTube) */}
+      <BackgroundMusic isPlaying={systemInitiated} />
 
       {/* Background 3D Scene */}
       <ThreeScene minimalMode={minimalMode} />

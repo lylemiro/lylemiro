@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Global Styles */
 @keyframes scroll-line {
@@ -29,4 +27,26 @@ body {
   background-color: #050505;
   color: #F0F0F0;
   overflow-x: hidden;
+}
+
+/* Custom Utilities that might not be detected */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom Theme Variables for Tailwind 4 */
+@theme {
+  --color-neo-black: #050505;
+  --color-neo-white: #F0F0F0;
+  --color-neo-yellow: var(--accent-color, #FF5F1F);
+  --color-grid-line: #1A1A1A;
+
+  --font-mono: "JetBrains Mono", monospace;
 }
