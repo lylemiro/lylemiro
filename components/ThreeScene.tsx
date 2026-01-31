@@ -1025,7 +1025,11 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
                     cometGroup.position.set(startX, startY, startZ);
 
                     const targetX = -startX * 1.8;
-                    const targetY = startY; // Level flight path near top of the sun
+                    // Force Diagonal: Add significant Y variation (+/- 300 to 500 offset)
+                    // If starting right (positive X), go Target Left. 
+                    // Let's make it random slope (up or down) but STEEP.
+                    const slopeY = (Math.random() > 0.5 ? 1 : -1) * (300 + Math.random() * 200);
+                    const targetY = startY + slopeY;
                     const targetZ = startZ;
                     const dir = new THREE.Vector3(targetX - startX, targetY - startY, targetZ - startZ).normalize();
 
