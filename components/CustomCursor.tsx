@@ -4,14 +4,9 @@ import { CursorState } from '../types';
 const CustomCursor: React.FC = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [cursorState, setCursorState] = useState<CursorState>(CursorState.DEFAULT);
-  const [isMobile, setIsMobile] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check if device supports hover/fine pointer
-    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
-    setIsMobile(!mediaQuery.matches);
-
     const onMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -56,8 +51,6 @@ const CustomCursor: React.FC = () => {
         return 'bg-neo-yellow mix-blend-difference';
     }
   };
-
-  if (isMobile) return null;
 
   return (
     <div

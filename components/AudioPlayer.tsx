@@ -1,25 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-interface AudioPlayerProps {
-    autoStart?: boolean;
-}
-
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ autoStart }) => {
+const AudioPlayer: React.FC = () => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
-        if (autoStart && audioRef.current) {
-            audioRef.current.play()
-                .then(() => setIsPlaying(true))
-                .catch(err => console.log('Autoplay blocked:', err));
-        }
-    }, [autoStart]);
-
-    useEffect(() => {
-        // Attempt autoplay on mount (fallback)
-        if (audioRef.current && !isPlaying) {
+        // Attempt autoplay on mount
+        if (audioRef.current) {
             audioRef.current.play()
                 .then(() => setIsPlaying(true))
                 .catch(err => {
@@ -101,7 +89,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ autoStart }) => {
             {/* Hidden Audio Element */}
             <audio
                 ref={audioRef}
-                src="/How To Disappear Completely - Oressa.mp3"
+                src="/bg-music.mp3"
                 loop
             />
         </div>

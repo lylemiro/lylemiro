@@ -36,7 +36,13 @@ const LoadingScreen: React.FC<{ onComplete: () => void }> = ({ onComplete }) => 
     };
   }, []);
 
-
+  useEffect(() => {
+    if (progress >= 100) {
+      setTimeout(() => {
+        onComplete();
+      }, 500);
+    }
+  }, [progress, onComplete]);
 
   return (
     <div className="fixed inset-0 z-[10000] bg-neo-black flex flex-col items-center justify-center font-mono select-none cursor-wait">
@@ -74,21 +80,9 @@ const LoadingScreen: React.FC<{ onComplete: () => void }> = ({ onComplete }) => 
         </div>
       </div>
 
-      {/* Status & Action */}
-      <div className="flex flex-col items-center w-64 md:w-96">
-        {progress < 100 ? (
-          <div className="flex justify-between w-full text-xs md:text-sm font-bold text-gray-400">
-            <span className="animate-pulse">SYSTEM_LOADING</span>
-            <span className="text-neo-yellow">{Math.floor(progress)}%</span>
-          </div>
-        ) : (
-          <button
-            onClick={onComplete}
-            className="w-full bg-neo-yellow text-black py-4 font-black uppercase tracking-widest hover:bg-white transition-all transform hover:scale-105 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] animate-bounce"
-          >
-            [ INITIATE_SYSTEM ]
-          </button>
-        )}
+      {/* Status Text - Removed "PROCESSING" label */}
+      <div className="flex justify-end w-64 md:w-96 text-xs md:text-sm font-bold text-gray-400">
+        <span className="text-neo-yellow">{Math.floor(progress)}%</span>
       </div>
 
       {/* Decorative corners */}

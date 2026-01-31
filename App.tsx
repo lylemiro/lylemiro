@@ -13,7 +13,6 @@ const App: React.FC = () => {
   const [minimalMode, setMinimalMode] = useState(false);
   const [colorIndex, setColorIndex] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
-  const [systemInitiated, setSystemInitiated] = useState(false);
 
   // Initialize CSS variables
   useEffect(() => {
@@ -41,7 +40,6 @@ const App: React.FC = () => {
 
   const handleLoadingComplete = () => {
     setLoading(false);
-    setSystemInitiated(true);
   };
 
   return (
@@ -52,8 +50,8 @@ const App: React.FC = () => {
       {/* Custom Cursor */}
       {!minimalMode && !loading && <CustomCursor />}
 
-      {/* Audio Player (Internal MP3) */}
-      <AudioPlayer autoStart={systemInitiated} />
+      {/* Audio Player */}
+      <AudioPlayer />
 
       {/* Background 3D Scene */}
       <ThreeScene minimalMode={minimalMode} />
