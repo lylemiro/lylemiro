@@ -937,8 +937,17 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             if (r1.position.z >= planeD) r1.position.z = -planeD;
             if (r2.position.z >= planeD) r2.position.z = -planeD;
 
+            // --- PLANET REVOLUTION ---
+            const orbitTime = Date.now() * 0.0005;
+            const orbitRadius = isMobile ? 80 : 150;
+            const orbitX = Math.cos(orbitTime) * orbitRadius;
+            const orbitY = 40 + Math.sin(orbitTime * 0.5) * 30; // Slight vertical oscillation
+            const orbitZ = -500 + Math.sin(orbitTime) * 100; // Orbiting the sun at z=-500
+            planetGroup.position.set(orbitX, orbitY, orbitZ);
+
             planet.rotation.y -= 0.002;
             ring.rotation.z += 0.005;
+            planetGroup.rotation.x = Math.sin(orbitTime * 0.3) * 0.1; // Dynamic tilt
 
             galaxy.rotation.z += 0.0005;
 
@@ -950,7 +959,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
 
             // --- SPAWN BACKGROUND STARS (30 per minute = 1 every 2 sec) ---
             if (bgShooters.length < 20) {
-                if (Math.random() < 0.01) { // ~1% chance per frame => 1 per ~1.6 sec (60fps)
+                if (Math.random() < 0.0083) { // ~0.83% chance per frame => 1 per 2 sec (60fps)
                     const s = bgShooterPool.find(l => l.position.y > 400);
                     if (s) {
                         const goingRight = Math.random() > 0.5;
@@ -1005,15 +1014,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
                     cometTimer = 0;
                     const startX = (Math.random() > 0.5 ? -1 : 1) * 800;
 
-                    // ADJUSTED SPAWN HEIGHT: MUCH lower to cross behind the Sun (center y=40, height 300)
-                    // Sun spans y = -110 to 190. Black Hole is at y=250.
-                    const startY = 0 + Math.random() * 80; // Focused near Sun center
+                    // ADJUSTED SPAWN HEIGHT: Near top of the Sun (Sun top is ~190)
+                    const startY = 180 + Math.random() * 40;
                     // BEHIND SUN (-500) and BLACK HOLE (-600).
                     const startZ = -1000 - Math.random() * 200;
                     cometGroup.position.set(startX, startY, startZ);
 
                     const targetX = -startX * 1.8;
-                    const targetY = startY; // Level flight path
+                    const targetY = startY; // Level flight path near top of the sun
                     const targetZ = startZ;
                     const dir = new THREE.Vector3(targetX - startX, targetY - startY, targetZ - startZ).normalize();
 
@@ -1040,10 +1048,10 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             }
 
 
-            // --- SPAWN MAIN METEORS (Low Frequency) ---
+            // --- SPAWN MAIN METEORS (10 per minute = 1 every 6 seconds) ---
             meteorTimer++;
-            // 60fps * 20s = 1200 frames per meteor roughly
-            if (activeMeteors.length < 1 && meteorTimer > 1200) { // 3 per minute approx
+            // 60fps * 6s = 360 frames per meteor
+            if (activeMeteors.length < 1 && meteorTimer > 360) {
                 if (Math.random() > 0.5) { // 50% chance when timer hits
                     const meteor = meteors.find(m => m.position.y > 400);
                     if (meteor) {
