@@ -1189,13 +1189,9 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ minimalMode }) => {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            // Significant width change (orientation) -> Re-sync everything
-            const widthChanged = Math.abs(width - lastWidth) > 50;
-
-            // Only update height if it expands (prevent squashing when URL bar shows)
-            const heightExpands = height > lastHeight;
-
-            if (widthChanged || heightExpands) {
+            // Only update if width changes significantly or height expands
+            // This prevents squashing when nav bars appear
+            if (Math.abs(width - lastWidth) > 50 || height > lastHeight) {
                 lastWidth = width;
                 lastHeight = height;
 

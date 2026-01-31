@@ -28,7 +28,7 @@ const App: React.FC = () => {
         return;
       }
 
-      // Otherwise, only expand the height, never shrink it
+      // Lock to the LARGEST height seen (prevents nav bar squashing)
       const currentHeight = parseFloat(document.documentElement.style.getPropertyValue('--app-height') || '0');
       if (vh > currentHeight) {
         document.documentElement.style.setProperty('--app-height', `${vh}px`);
